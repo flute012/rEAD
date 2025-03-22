@@ -26,10 +26,7 @@
   </div>
 
   <script src="https://unpkg.com/vue@3"></script> <!-- 引入 Vue 3 -->
-  <script type="module">
-    // 匯入 JSON 文件
-    import jsonData from './content.json' assert { type: 'json' };
-
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
       const app = Vue.createApp({
         data() {
@@ -45,17 +42,26 @@
           },
           getContentByCategory(category) {
             return this.contentData.filter(item => item.分類 === category);
+          },
+          async loadContent() {
+            try {
+              const response = await fetch('./L1-content.json');
+              const jsonData = await response.json();
+              this.lessonName = jsonData.L1.lessonName;
+              this.contentData = jsonData.L1.content;
+              this.isLoading = false;
+            } catch (error) {
+              console.error('JSON 載入失敗:', error);
+            }
           }
         },
         mounted() {
-          // 載入 JSON 資料
-          this.lessonName = jsonData.L1.lessonName;
-          this.contentData = jsonData.L1.content;
-          this.isLoading = false;
+          this.loadContent();
         }
       });
       app.mount('#app');
     });
   </script>
+  
 </body>
 </html>
