@@ -45,7 +45,7 @@
           },
           async loadContent() {
             try {
-              const response = await fetch('./L1-content.json');
+              const response = await fetch('./content.json');
               const jsonData = await response.json();
               this.lessonName = jsonData.L1.lessonName;
               this.contentData = jsonData.L1.content;
